@@ -9,14 +9,20 @@ class User:
     def __init__(self, username):
         self.__username = username
 
-    def init_queues(self):
-        #TODO: Fazer uma comunicação inicial com o MainServer para requisitar o chat
+    def find_chat(self):
+        context = zmq.Context()
+        temp_mq = context.socket(zmq.REQ)
+        temp_mq.connect(f"tcp://localhost:5555")
 
-        possible_chats = [(5556,5557),
-                          (5558,5559),
-                          (5560,5561)
-                          ] #Apenas para testes
-        sending_port, receiving_port = random.choice(possible_chats)
+        temp_mq.send_string("FindChat")
+        receiving_port, sending_port = temp_mq.recv_json()
+        temp_mq.disconnect(f"tcp://localhost:5555")
+
+        return receiving_port, sending_port
+
+    def init_queues(self):
+
+        sending_port, receiving_port = self.find_chat()
 
         context = zmq.Context()
         self.__sending_mq = context.socket(zmq.PUB)

@@ -7,6 +7,9 @@ class ChatMonitor:
         self.__monitor = socket
         self.__user_counter = 0
 
+    def get_counter_users(self):
+        return self.__user_counter
+
     def start_monitoring(self):
         while self.__monitor.poll():
             evt = dict()

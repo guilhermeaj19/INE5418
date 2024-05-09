@@ -1,5 +1,7 @@
 from chat import Chat
 from threading import Thread
+import random
+import zmq
 from multiprocessing import *
 
 class MainServer:
@@ -9,15 +11,36 @@ class MainServer:
                         Chat("Chat 3",5560,5561)
                        ]
 
+        self.__find_chat_context = zmq.Context()
+        self.__find_chat_mq = self.__find_chat_context.socket(zmq.REP)
+        self.__find_chat_mq.bind(f"tcp://*:5555")
+        self.__finder_thread = Thread(target=self.waiting_conection)
+
         self.__chats_threads = []
         for chat in self.__chats:
             self.__chats_threads.append(Thread(target=chat.start))
 
+    def waiting_conection(self):
+        while True:
+            request = self.__find_chat_mq.recv_string()
+
+            for chat in self.__chats:
+                print(chat.get_counter_users())
+                print(chat.get_ports())
+
+            self.__find_chat_mq.send_json(random.choice(self.__chats).get_ports())
+
     def start(self):
         for chat in self.__chats_threads:
             chat.start()
+
+        self.__finder_thread.start()
+
         for chat in self.__chats_threads:
             chat.join()
+            print("A")
+        
+        self.__finder_thread.join()
 
 mainserver = MainServer()
 mainserver.start()
