@@ -1,6 +1,7 @@
 # from multiprocessing import Process
 from threading import Thread
 import zmq
+import random
 from tkinter import *
 
 
@@ -12,13 +13,18 @@ class User:
         self.__username = username
 
     def init_queues(self):
+        #TODO: Fazer uma comunicação inicial com o MainServer para requisitar o chat
+
+        possible_chats = [(5556,5557),(5558,5559),(5560,5561)] #Apenas para testes
+        sending_port, receiving_port = random.choice(possible_chats)
+
         context = zmq.Context()
         self.__sending_mq = context.socket(zmq.PUB)
-        self.__sending_mq.connect("tcp://localhost:5556")
+        self.__sending_mq.connect(f"tcp://localhost:{sending_port}")
 
         context = zmq.Context()
         self.__receiving_mq = context.socket(zmq.SUB)
-        self.__receiving_mq.connect("tcp://localhost:5557")
+        self.__receiving_mq.connect(f"tcp://localhost:{receiving_port}")
         self.__receiving_mq.setsockopt_string( zmq.SUBSCRIBE, "")
 
         self.__receiving_thread = Thread(target=self.waiting_message)
