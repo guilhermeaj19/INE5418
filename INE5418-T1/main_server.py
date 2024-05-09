@@ -28,7 +28,10 @@ class MainServer:
                 print(chat.get_counter_users())
                 print(chat.get_ports())
 
-            self.__find_chat_mq.send_json(random.choice(self.__chats).get_ports())
+            from_client_port, to_client_port = random.choice(self.__chats).get_ports()
+
+            data = {"to_server": from_client_port, "from_server": to_client_port}
+            self.__find_chat_mq.send_json(data)
 
     def start(self):
         for chat in self.__chats_threads:

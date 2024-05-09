@@ -15,25 +15,25 @@ class User:
         temp_mq.connect(f"tcp://localhost:5555")
 
         temp_mq.send_string("FindChat")
-        receiving_port, sending_port = temp_mq.recv_json()
+        ports = temp_mq.recv_json()
         temp_mq.disconnect(f"tcp://localhost:5555")
 
-        return receiving_port, sending_port
+        return ports["to_server"], ports["from_server"]
 
     def init_queues(self):
 
-        sending_port, receiving_port = self.find_chat()
+        to_server_port, from_server_port = self.find_chat()
 
         context = zmq.Context()
-        self.__sending_mq = context.socket(zmq.PUB)
-        self.__sending_mq.connect(f"tcp://localhost:{sending_port}")
+        self.__to_server_mq = context.socket(zmq.PUB)
+        self.__to_server_mq.connect(f"tcp://localhost:{to_server_port}")
 
         context = zmq.Context()
-        self.__receiving_mq = context.socket(zmq.SUB)
-        self.__receiving_mq.connect(f"tcp://localhost:{receiving_port}")
-        self.__receiving_mq.setsockopt_string( zmq.SUBSCRIBE, "")
+        self.__from_server_mq = context.socket(zmq.SUB)
+        self.__from_server_mq.connect(f"tcp://localhost:{from_server_port}")
+        self.__from_server_mq.setsockopt_string( zmq.SUBSCRIBE, "")
 
-        self.__receiving_thread = Thread(target=self.waiting_message)
+        self.__from_server_thread = Thread(target=self.waiting_message)
 
     def init_window(self):
         self.__window = tk.Tk()
@@ -61,21 +61,21 @@ class User:
     def start(self):
         self.init_window()
         self.init_queues()
-        self.__receiving_thread.start()
+        self.__from_server_thread.start()
         self.__window.mainloop()
 
         #Desligandos sockets
-        self.__receiving_mq.close()
-        self.__sending_mq.close()
+        self.__from_server_mq.close()
+        self.__to_server_mq.close()
         exit()
 
     def writing_message(self, message_to_send):
         data = {"user": self.__username, "message": message_to_send}
-        self.__sending_mq.send_json(data)
+        self.__to_server_mq.send_json(data)
 
     def waiting_message(self):
         while True:
-            message = self.__receiving_mq.recv_json()
+            message = self.__from_server_mq.recv_json()
 
             name_user, text_received = message["user"], message["message"]
 

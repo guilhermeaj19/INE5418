@@ -3,34 +3,34 @@ from chat_monitor import ChatMonitor
 from threading import Thread
 
 class Chat:
-    def __init__(self, chatname, port_receiving, port_sending):
+    def __init__(self, chatname, port_from_client, port_to_client):
 
         self.__name = chatname
-        self.__port_receiving = port_receiving
-        self.__port_sending = port_sending
-        self.init_queues(port_receiving, port_sending)
+        self.__port_from_client = port_from_client
+        self.__port_to_client = port_to_client
+        self.init_queues(port_from_client, port_to_client)
         self.init_monitor()
 
     def get_ports(self):
-        return self.__port_receiving, self.__port_sending
+        return self.__port_from_client, self.__port_to_client
 
     def get_counter_users(self):
         return self.__monitor.get_counter_users() 
 
-    def init_queues(self, port_receiving, port_sending):
-        self.__receive_context = zmq.Context()
-        self.__receiving_mq = self.__receive_context.socket(zmq.SUB)
-        self.__receiving_mq.bind(f"tcp://*:{port_receiving}")
-        self.__receiving_mq.setsockopt_string(zmq.SUBSCRIBE, "")
+    def init_queues(self, port_from_client, port_to_client):
+        self.__from_client_context = zmq.Context()
+        self.__from_client_mq = self.__from_client_context.socket(zmq.SUB)
+        self.__from_client_mq.bind(f"tcp://*:{port_from_client}")
+        self.__from_client_mq.setsockopt_string(zmq.SUBSCRIBE, "")
 
-        self.__sending_context = zmq.Context()
-        self.__sending_mq = self.__sending_context.socket(zmq.PUB)
-        self.__sending_mq.bind(f"tcp://*:{port_sending}")
+        self.__to_client_context = zmq.Context()
+        self.__to_client_mq = self.__to_client_context.socket(zmq.PUB)
+        self.__to_client_mq.bind(f"tcp://*:{port_to_client}")
 
         self.__messages_thread = Thread(target=self.waiting_message)
 
     def init_monitor(self):
-        self.__monitor = ChatMonitor(self.__name, self.__receiving_mq.get_monitor_socket())
+        self.__monitor = ChatMonitor(self.__name, self.__from_client_mq.get_monitor_socket())
         self.__monitor_thread = Thread(target=self.__monitor.start_monitoring)
 
     def start(self):
@@ -40,15 +40,15 @@ class Chat:
 
         self.__messages_thread.join()
         self.__monitor_thread.join()
-        self.__sending_mq.close()
-        self.__receiving_mq.close()
+        self.__to_client_mq.close()
+        self.__from_client_mq.close()
 
     def waiting_message(self):
         while True:
-            message = self.__receiving_mq.recv_json()
+            message = self.__from_client_mq.recv_json()
 
             name_user, text_received = message["user"], message["message"]
 
             print(f"{self.__name}\t|\tReceived from {name_user}: {text_received}")
 
-            self.__sending_mq.send_json(message)
+            self.__to_client_mq.send_json(message)
