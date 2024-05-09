@@ -13,7 +13,7 @@ class User:
 
     def init_queues(self):
         context = zmq.Context()
-        self.__sending_mq = context.socket(zmq.REQ)
+        self.__sending_mq = context.socket(zmq.PUB)
         self.__sending_mq.connect("tcp://localhost:5556")
 
         context = zmq.Context()
@@ -58,7 +58,7 @@ class User:
         data = {"user": self.__username, "message": message_to_send}
 
         self.__sending_mq.send_json(data)
-        print(self.__sending_mq.recv_string())
+
 
     def waiting_message(self):
         while True:
