@@ -35,7 +35,7 @@ class User:
     def waiting_message(self):
         while True:
             message = self.__receiving_mq.recv_json()
-            print(message)
+
             name_user, text_received = message["user"], message["message"]
             print(f"{name_user}: {text_received}")
 
