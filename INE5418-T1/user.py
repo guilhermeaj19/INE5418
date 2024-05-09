@@ -11,6 +11,7 @@ class User:
     def __init__(self, username):
         self.__username = username
 
+    def init_queues(self):
         context = zmq.Context()
         self.__sending_mq = context.socket(zmq.REQ)
         self.__sending_mq.connect("tcp://localhost:5556")
@@ -23,9 +24,10 @@ class User:
         self.__receiving_thread = Thread(target=self.waiting_message)
 
 
+    def init_window(self):
         self.__window = Tk()
-
         self.__messages = Text(self.__window)
+        self.__messages.config(state="disabled")
         self.__messages.pack()
 
         self.__input_user = StringVar()
@@ -45,6 +47,8 @@ class User:
         return "break"
 
     def start(self):
+        self.init_window()
+        self.init_queues()
         self.__receiving_thread.start()
         self.__window.mainloop()
         exit()
@@ -61,7 +65,9 @@ class User:
             message = self.__receiving_mq.recv_json()
 
             name_user, text_received = message["user"], message["message"]
+            self.__messages.config(state="normal")
             self.__messages.insert(INSERT, '%s\n' % f"{name_user}: {text_received}")
+            self.__messages.config(state="disabled")
 
 
 
