@@ -6,7 +6,6 @@ import zmq
 class MainServer:
     def __init__(self):
         self.__chats = []
-        self.__chats_threads = []
 
         self.__find_chat_context = zmq.Context()
         self.__find_chat_mq = self.__find_chat_context.socket(zmq.REP)
@@ -15,8 +14,7 @@ class MainServer:
 
     def create_new_chat(self) -> Chat:
         self.__chats.append(Chat(f"Chat{len(self.__chats)}"))
-        self.__chats_threads.append(Thread(target=self.__chats[-1].start))
-        self.__chats_threads[-1].start()
+        self.__chats[-1].start()
         return self.__chats[-1]
 
     def find_best_chat(self):
@@ -47,15 +45,11 @@ class MainServer:
             self.__find_chat_mq.send_json(data)
 
     def start(self):
-        for chat in self.__chats_threads:
-            chat.start()
-
         self.__finder_thread.start()
-
-        for chat in self.__chats_threads:
-            chat.join()
-        
         self.__finder_thread.join()
+
+        for chat in self.__chats:
+            chat.join()
 
 mainserver = MainServer()
 mainserver.start()
