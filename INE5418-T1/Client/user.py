@@ -6,17 +6,20 @@ import tkinter as tk
 
 
 class User:
-    def __init__(self, username):
+    def __init__(self, username, adress):
         self.__username = username
+        ip, port = adress.split(":")
+        self.__main_server_adress = ip
+        self.__main_server_port = port
 
     def find_chat(self):
         context = zmq.Context()
         temp_mq = context.socket(zmq.REQ)
-        temp_mq.connect(f"tcp://localhost:5555")
+        temp_mq.connect(f"tcp://{self.__main_server_adress}:{self.__main_server_port}")
 
         temp_mq.send_string("FindChat")
         ports = temp_mq.recv_json()
-        temp_mq.disconnect(f"tcp://localhost:5555")
+        temp_mq.disconnect(f"tcp://{self.__main_server_adress}:{self.__main_server_port}")
 
         return ports["to_server"], ports["from_server"]
 
@@ -26,11 +29,11 @@ class User:
 
         context = zmq.Context()
         self.__to_server_mq = context.socket(zmq.PUB)
-        self.__to_server_mq.connect(f"tcp://localhost:{to_server_port}")
+        self.__to_server_mq.connect(f"tcp://{self.__main_server_adress}:{to_server_port}")
 
         context = zmq.Context()
         self.__from_server_mq = context.socket(zmq.SUB)
-        self.__from_server_mq.connect(f"tcp://localhost:{from_server_port}")
+        self.__from_server_mq.connect(f"tcp://{self.__main_server_adress}:{from_server_port}")
         self.__from_server_mq.setsockopt_string( zmq.SUBSCRIBE, "")
 
         self.__from_server_thread = Thread(target=self.waiting_message)
@@ -86,6 +89,7 @@ class User:
             self.__messages.config(state="disabled")
 
 username = input("Insira seu nome: ")
-user = User(username)
+adress = input("Insira o endereço do main_server: ")
+user = User(username, adress)
 user.start()
 
