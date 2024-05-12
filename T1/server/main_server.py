@@ -45,6 +45,7 @@ class MainServer:
 
     def start(self):
         self.__finder_thread.start()
+        print("Main Server Started")
         self.__finder_thread.join()
 
         for chat in self.__chats:
