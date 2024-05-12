@@ -7,6 +7,10 @@ Servidor e cliente de um chat Python com Sockets
 
 Chat
 
+```bash
+  git clone https://github.com/guilhermeaj19/INE5418
+```
+
 Vá para o diretório do projeto
 
 ```bash
