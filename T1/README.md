@@ -3,8 +3,6 @@
 
 Servidor e cliente de um chat Python com Sockets
 
-## Rodar localmente
-
 Chat
 
 Vá para o diretório do projeto
