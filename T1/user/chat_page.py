@@ -1,7 +1,5 @@
-# from multiprocessing import Process
 from threading import Thread
 import zmq
-import random
 import tkinter as tk
 from interface.page import Page
 
@@ -62,11 +60,6 @@ class ChatPage(Page):
     def start(self):
         self.init_queues()
         self.__from_server_thread.start()
-
-        #Desligandos sockets
-        # self.__from_server_mq.close()
-        # self.__to_server_mq.close()
-        # exit()
 
     def writing_message(self, message_to_send):
         data = {"user": self.__username, "message": message_to_send}

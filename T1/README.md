@@ -30,3 +30,5 @@ Executar o chat de usuário
 ```bash
   python3 client.py
 ```
+  Coloque um nome de usuário e o endereço IP do Servidor
+  Caso o servidor esteja na mesma máquina, pode colocar localhost ou 127.0.0.1

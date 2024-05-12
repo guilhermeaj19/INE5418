@@ -1,4 +1,3 @@
-# from multiprocessing import Process
 import tkinter as tk
 from interface.page import Page
 
