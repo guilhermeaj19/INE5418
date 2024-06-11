@@ -29,15 +29,12 @@ class TupleSpaceConnection:
                 data, _ = self.zk.get(path)
                 tuple_data = json.loads(data.decode('utf-8'))
                 if self._matches(query, tuple_data):
-                    tuples.append(tuple_data)
+                    return tuple_data
             except NoNodeError:
                 print("NoNodeError on TupleSpaceConnection.read(). Continuing...")
                 continue
-        if tuples:
-            # print(f"Tuples read: {tuples}")
-            return tuples[0]  # return the first matching tuple
-        # print("No matching tuple found")
-        return []
+        print(f"read(): No tuples found matching {query}.")
+        return None
 
     def get(self, query):
         printed_block = False
