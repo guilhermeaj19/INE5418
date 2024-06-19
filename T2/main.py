@@ -1,6 +1,6 @@
 import sys
 import os
-import server as sv
+import tupleSpaceConnection as sv
 
 if __name__ == "__main__":
     
