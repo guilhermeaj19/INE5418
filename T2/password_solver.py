@@ -1,4 +1,4 @@
-from tupleSpaceConnection import TupleSpaceConnection
+from tuple_space_connection import TupleSpaceConnection
 import zmq
 
 class PasswordSolver:

@@ -1,5 +1,5 @@
 
-from tupleSpaceConnection import TupleSpaceConnection
+from tuple_space_connection import TupleSpaceConnection
 
 class Producer:
     def __init__(self, tuplespace_adrs: str = '127.0.0.1:2181'):
