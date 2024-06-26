@@ -14,10 +14,10 @@ if __name__ == "__main__":
         match command:
             
             case "help":
-                print("help: Displays commands")
+                print("help: Display commands")
                 print("test_client: Run a CLI client for testing")
-                print("start_zk: Start the zookeeper server.")
-                print("stop_zk: Stop the zookeeper server.")
+                print("zk_start: Start the zookeeper server.")
+                print("zk_stop: Stop the zookeeper server.")
                 
             case "test_client":
                 with open("zookeper_hosts.txt") as file:
@@ -73,11 +73,15 @@ if __name__ == "__main__":
                         case _:
                             continue
 
-            case "start_zk":
-                os.system("apache-zookeeper-3.9.2-bin/bin/zkServer.sh start")
+            case "zk_start":
+                os.system("server.1/apache-zookeeper-3.9.2-bin/bin/zkServer.sh start")
+                os.system("server.2/apache-zookeeper-3.9.2-bin/bin/zkServer.sh start")
+                os.system("server.3/apache-zookeeper-3.9.2-bin/bin/zkServer.sh start")
             
-            case "stop_zk":
-                os.system("apache-zookeeper-3.9.2-bin/bin/zkServer.sh stop")
+            case "zk_stop":
+                os.system("server.1/apache-zookeeper-3.9.2-bin/bin/zkServer.sh stop")
+                os.system("server.2/apache-zookeeper-3.9.2-bin/bin/zkServer.sh stop")
+                os.system("server.3/apache-zookeeper-3.9.2-bin/bin/zkServer.sh stop")
                 
             case _:
                 print("To see available commands: python main.py help")

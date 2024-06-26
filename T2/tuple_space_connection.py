@@ -70,16 +70,3 @@ class TupleSpaceConnection:
     def close(self):
         self.zk.stop()
         self.zk.close()
-
-def test(server: TupleSpaceConnection):
-
-    # Exemplo de escrita
-    server.write(["INE5418", "Fulano", "8.5", "80"])
-
-    # Exemplo de leitura
-    print(server.read(["INE5418", "*", "*", "*"]))
-
-    # Exemplo de obtenção (get)
-    print(server.get(["INE5418", "Fulano", "*", "*"]))
-
-    server.close()
