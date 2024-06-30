@@ -1,0 +1,1 @@
+python3 tuplespace/main.py $1
