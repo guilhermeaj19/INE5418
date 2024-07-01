@@ -37,7 +37,7 @@ Executar o archiver (vai guardar as senhas descriptografadas)
   python3 app_archiver.py
 ```
 
-Executar 1 ou mais consumers (vai descriptografar as senhas)
+Executar um consumidor (vai descriptografar as senhas)
 
 ```bash
   python3 app_consumer.py
@@ -46,7 +46,7 @@ Executar 1 ou mais consumers (vai descriptografar as senhas)
   Pode alterar o endereço do archiver. Por padrão é: tcp://127.0.0.1:63000 <br />
   Clique em "Enviar" para ativar o consumer e deixar ele aguardando uma senha. <br />
 
-Executar 1 ou mais producers (envia as senhas pro zookeeper e indica o modo)
+Executar um producer (envia as senhas pro zookeeper e indica o modo)
 
 ```bash
   python3 app_producer.py
@@ -56,8 +56,3 @@ Executar 1 ou mais producers (envia as senhas pro zookeeper e indica o modo)
   Indique o modo: <br />
     - Intervalos: testar de X a Y <br />
     - Lista: se baseiar numa lista de senhas pré-estabelecida <br />
-
-
-
-  Coloque um nome de usuário e o endereço IP do Servidor
-  Caso o servidor esteja na mesma máquina, pode colocar localhost ou 127.0.0.1
