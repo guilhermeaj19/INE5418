@@ -11,10 +11,10 @@ class BruteForcer:
 
     def brute_force_list(self, expected_hash, path = None, callback=None):
         l = open(path if path else "password_files/wordlist.txt", "r").readlines()
-        for word in l:
+        for i in range(len(l)):
             if callback:
-                word = word.replace("\n","")
-                callback(word)
+                word = l[i].replace("\n","")
+                callback(f"Modo: Lista\nHash: {expected_hash}\nTentando: {word}\nPosição {i+1}-{len(l)}")
             if self.hashing(word) == expected_hash:
                 return word
         return None
@@ -24,7 +24,7 @@ class BruteForcer:
         ran = range(*range_l)
         for i in ran:
             if callback:
-                callback(i)
+                callback(f"Modo: Intervalo\nHash: {expected_hash}\nPosição {i+1}-{r.split('-')[1]}")
             if self.hashing(str(i)) == expected_hash:
                 return i
         return None

@@ -4,7 +4,7 @@ import hashlib
 from passwordbruteforce.brute_forcer import BruteForcer
 
 class PasswordSolver:
-    def __init__(self, tuplespace_adrs: str = '127.0.0.1:5590', archiver_adr: str = 'tcp://127.0.0.1:63000') -> None:
+    def __init__(self, tuplespace_adrs: str = '127.0.0.1:5591', archiver_adr: str = 'tcp://127.0.0.1:63000') -> None:
         self.__tuplespace = TupleSpaceConnection(tuplespace_adrs)
         context = zmq.Context()
         self.__to_archiver_mq = context.socket(zmq.PUB)
