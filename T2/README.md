@@ -23,6 +23,12 @@ Inicializar os servidores
   source server.sh zk_start
 ```
 
+Finalizar os servidores
+
+```bash
+  source server.sh zk_stop
+```
+
 Aplicação
 
 Executar o archiver (vai guardar as senhas descriptografadas)
@@ -36,20 +42,20 @@ Executar 1 ou mais consumers (vai descriptografar as senhas)
 ```bash
   python3 app_consumer.py
 ```
-  Coloque os endereços dos servidores Zookeeper. Por padrão é: 127.0.0.1:5551,127.0.0.1:5552,127.0.0.1:5553
-  Pode alterar o endereço do archiver. Por padrão é: tcp://127.0.0.1:63000
-  Clique em "Enviar" para ativar o consumer e deixar ele aguardando uma senha.
+  Coloque os endereços dos servidores Zookeeper. Por padrão é: 127.0.0.1:5551,127.0.0.1:5552,127.0.0.1:5553 <br />
+  Pode alterar o endereço do archiver. Por padrão é: tcp://127.0.0.1:63000 <br />
+  Clique em "Enviar" para ativar o consumer e deixar ele aguardando uma senha. <br />
 
 Executar 1 ou mais producers (envia as senhas pro zookeeper e indica o modo)
 
 ```bash
   python3 app_producer.py
 ```
-  Coloque os endereços dos servidores Zookeeper. Por padrão é: 127.0.0.1:5551,127.0.0.1:5552,127.0.0.1:5553
-  Selecione o arquivos com as senhas (há um passwords.txt como teste na pasta)
-  Indique o modo:
-    - Intervalos: testar de X a Y
-    - Lista: se baseiar numa lista de senhas pré-estabelecida
+  Coloque os endereços dos servidores Zookeeper. Por padrão é: 127.0.0.1:5551,127.0.0.1:5552,127.0.0.1:5553 <br />
+  Selecione o arquivos com as senhas (há um passwords.txt como teste na pasta) <br />
+  Indique o modo: <br />
+    - Intervalos: testar de X a Y <br />
+    - Lista: se baseiar numa lista de senhas pré-estabelecida <br />
 
 
 
