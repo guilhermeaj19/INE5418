@@ -52,7 +52,7 @@ Serviço de Descriptografia de Senhas em sha256
   python3 app_producer.py
 ```
   Coloque os endereços dos servidores Zookeeper. Por padrão é: 127.0.0.1:5551,127.0.0.1:5552,127.0.0.1:5553 <br />
-  Selecione o arquivos com as senhas (há um passwords.txt como teste na pasta) <br />
+  Selecione o arquivos com as senhas (há diretório password_files com arquivos de teste) <br />
   Indique o modo: <br />
     - Intervalos: testar de X a Y <br />
     - Lista: se baseiar numa lista de senhas pré-estabelecida <br />
