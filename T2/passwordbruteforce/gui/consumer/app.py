@@ -25,8 +25,9 @@ class ConsumerApp(tk.Tk):
         self.title("Consumer")
 
         # Tuplespaces
-        self.endereco_label = tk.Label(master, text="Tuplespaces IP:")
+        self.endereco_label = tk.Label(master, text="Tuplespace IPs:")
         self.endereco_entry = tk.Entry(master)
+        self.endereco_entry.insert(0, "127.0.0.1:5551,127.0.0.1:5552,127.0.0.1:5553")
         self.endereco_label.grid(row=0, column=0, sticky=W, pady=1)
         self.endereco_entry.grid(row=0, column=1, sticky=W, pady=1)
 
