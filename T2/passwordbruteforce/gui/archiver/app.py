@@ -1,33 +1,40 @@
 import tkinter as tk
-from passwordbruteforce.gui.archiver.chat_page import ChatPage
-from passwordbruteforce.gui.archiver.connect_page import ConnectPage
+import threading
+from passwordbruteforce.archiver import Archiver
 
-class ChatApp(tk.Tk):
-    def __init__(
-        self,
-        title: str | None = None,
-        width: int | None = None,
-        height: int | None = None,
-    ) -> None:
-        super().__init__()
-        self._configure_window(title, width, height)
-        self._init_frames()
-        self.show("ConnectPage")
+class ArchiverApp(tk.Tk):
+    def __init__(self, master=None):
+        super().__init__(master)
+        self.title("Archiver")
+        self.init_window()
+        self.archiver = Archiver()
+        self.wait_result = threading.Thread(target=self.archiver.wait_result, args=(self._update_log,))
+        self.wait_result.start()
 
-    def _configure_window(self, title, width, height):
-        self.title(title if title else "ChatApp")
-        self.resizable(False, False)
+    def init_window(self):
+        self.__messages = tk.Text(self)
+        self.__messages.config(state="disabled")
+        self.__messages.pack(fill=tk.X)
 
-    def _init_frames(self):
-        self.__frames = {}
-        self.container = tk.Frame(self)
-        self.container.pack(side = "top", fill = "both", expand = True)
-        self.container.grid_rowconfigure(0, weight=1)
-        self.container.grid_columnconfigure(0, weight=1)
+        # self.__input_user = tk.StringVar()
+        # self.__input_field = tk.Entry(self, text=self.__input_user)
+        # self.__input_field.pack(side = tk.BOTTOM, fill="both")
 
-        for page in [ConnectPage, ChatPage]:
-            self.__frames[page.__name__] = page(self.container, self)
-            self.__frames[page.__name__].grid(row=0, column=0, sticky="nsew")
+        frame = tk.Frame(self)
+        # self.__input_field.bind("<Return>", self.enter_pressed)
+        frame.pack()
 
-    def show(self, frame_name: str, *args, **kwargs):
-        self.__frames[frame_name].show(*args, **kwargs)
+    def enter_pressed(self,event):
+        input_get = self.__input_field.get()
+    
+        self.writing_message(input_get)
+        self.__input_user.set('')
+
+        return "break"
+
+    def _update_log(self, text):
+        self.__messages.config(state="normal")
+
+        self.__messages.insert(tk.INSERT, '%s\n' % f"{text}")
+        self.__messages.see("end")
+        self.__messages.config(state="disabled")

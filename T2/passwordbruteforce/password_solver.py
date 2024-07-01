@@ -11,10 +11,10 @@ class PasswordSolver:
         self.__to_archiver_mq.connect(addr=archiver_adr)
         self.brute_forcer = BruteForcer()
 
-    def wait_password(self):
+    def wait_password(self, callback=None):
         while True:
             tuple_password = self.__tuplespace.get(["*","*","*"])
-            passwd = self.brute_forcer.force(*tuple_password)
+            passwd = self.brute_forcer.force(*tuple_password, callback=callback)
             if passwd is not None:
                 self.solve_password(tuple_password[0], passwd)
     

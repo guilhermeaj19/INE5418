@@ -8,7 +8,9 @@ class Archiver:
         self.__from_solver_mq.bind("tcp://*:63000")
         self.__from_solver_mq.setsockopt_string(zmq.SUBSCRIBE, "")
 
-    def wait_result(self):
+    def wait_result(self, callback=None):
         while True:
             data = self.__from_solver_mq.recv_json()
-            print(data)
+            if callback == None:
+                callback = print
+            callback(data)
