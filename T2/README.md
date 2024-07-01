@@ -3,41 +3,41 @@
 
 Serviço de Descriptografia de Senhas em sha256
 
-Zookeeper
+## Zookeeper
 
-Vá para o diretório do projeto
+### Vá para o diretório do projeto
 
 ```bash
   cd T2
 ```
 
-Instalar as dependências
+### Instalar as dependências
 
 ```bash
   pip3 install -r requirements.txt
 ```
 
-Inicializar os servidores
+### Inicializar os servidores
 
 ```bash
   source server.sh zk_start
 ```
 
-Finalizar os servidores
+### Finalizar os servidores
 
 ```bash
   source server.sh zk_stop
 ```
 
-Aplicação
+## Aplicação
 
-Executar o archiver (vai guardar as senhas descriptografadas)
+### Executar o archiver (vai guardar as senhas descriptografadas)
 
 ```bash
   python3 app_archiver.py
 ```
 
-Executar um consumidor (vai descriptografar as senhas)
+### Executar um consumidor (vai descriptografar as senhas)
 
 ```bash
   python3 app_consumer.py
@@ -46,7 +46,7 @@ Executar um consumidor (vai descriptografar as senhas)
   Pode alterar o endereço do archiver. Por padrão é: tcp://127.0.0.1:63000 <br />
   Clique em "Enviar" para ativar o consumer e deixar ele aguardando uma senha. <br />
 
-Executar um producer (envia as senhas pro zookeeper e indica o modo)
+### Executar um producer (envia as senhas pro zookeeper e indica o modo)
 
 ```bash
   python3 app_producer.py
